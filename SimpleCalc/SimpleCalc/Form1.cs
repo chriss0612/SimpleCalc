@@ -86,7 +86,7 @@ namespace SimpelCalc
 
         private void decpoints_Scroll(object sender, EventArgs e)
         {
-            label3.Text = "decimal points: " + decpoints.Value;
+            labelDecPoints.Text = "decimal points: " + decpoints.Value;
             calcs.decpl = decpoints.Value;
             output.Text = calcs.recalc(input.Text);
         }
