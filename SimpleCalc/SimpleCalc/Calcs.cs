@@ -9,7 +9,8 @@ namespace SimpelCalc
         public bool nullto0;
         public int mode;
         private bool err;
-        private decimal pi = 3.1415926535897932384626433833m;
+        private static decimal pi = 3.1415926535897932384626433833m;
+        private static string minstr = "minus";
 
         public Calcs()
         {
@@ -25,7 +26,7 @@ namespace SimpelCalc
             inp = inp.Replace("pi", Convert.ToString(pi));
             try
             {
-                erg = bracts(inp);
+                erg = stmin(inp);
             }
             catch (Exception)
             {
@@ -42,17 +43,33 @@ namespace SimpelCalc
                 return (Math.Round(erg, decpl)).ToString();
             }
         }
+        private decimal stmin(string inp)
+        {
+            if(inp.StartsWith("-"))
+            {
+                inp = minstr + inp.Remove(0, 1);
+            }
+            inp = inp.Replace("/-", "/"+minstr).Replace("*-", "*"+minstr).Replace("+-", "+"+minstr).Replace("--", "-"+minstr).Replace("(-", "(" + minstr);
+            return bracts(inp);
+        }
 
         private decimal bracts(string inp)
         {
             string tmp, edit = inp, editA = edit;
             string[] tmpArray;
+            string tmperg;
             while (true)
             {
                 tmpArray = edit.Split('(');
                 tmp = tmpArray[tmpArray.Length - 1];
                 tmp = tmp.Split(')')[0];
-                edit = edit.Replace("(" + tmp + ")", Convert.ToString(addsub(tmp)));
+                tmperg = Convert.ToString(addsub(tmp));
+                if (tmperg.StartsWith("-"))
+                {
+                    tmperg = minstr + tmperg.Remove(0, 1);
+                }
+                
+                edit = edit.Replace("(" + tmp + ")", tmperg);
                 if (edit.Equals(editA))
                 {
                     break;
@@ -67,33 +84,28 @@ namespace SimpelCalc
             string[] teil1 = inp.Split('+');
             string[] teil2 = teil1[0].Split('-');
             int i = 1;
-            if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/"))
+           /* if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/") || teil2[0].Equals(""))
             {
-                erg = erg - multiDivi(teil2[0] + teil2[1].Split('*')[0].Split('/')[0]);
+                erg = erg - multiDivi(teil2[0] + teil2[1]);
                 i = 2;
             }
-            else
-                erg = erg + multiDivi(teil2[0]);
+            else*/
+            erg = erg + multiDivi(teil2[0]);
             for (; i < teil2.Length; i++)
             {
-                if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/"))
-                {
-                    erg = erg - multiDivi(teil2[0] + teil2[0].Split('*')[0].Split('/')[0]);
-                }
-                else
-                    erg = erg - multiDivi(teil2[i]);
+                erg = erg - multiDivi(teil2[i]);
             }
             for (int d = 1; d < teil1.Length; d++)
             {
                 teil2 = teil1[d].Split('-');
                 i = 1;
-                if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/"))
+              /*  if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/") || teil2[0].Equals(""))
                 {
-                    erg = erg - multiDivi(teil2[0] + teil2[0].Split('*')[0].Split('/')[0]);
+                    erg = erg - multiDivi(teil2[0] + teil2[0]);
                     i = 2;
                 }
-                else
-                    erg = erg + multiDivi(teil2[0]);
+                else */
+                erg = erg + multiDivi(teil2[0]);
                 for (; i < teil2.Length; i++)
                 {
                     erg = erg - multiDivi(teil2[i]);
@@ -149,6 +161,11 @@ namespace SimpelCalc
                 {
                     return 0d;
                 }
+                if(s.StartsWith(minstr))
+                {
+                    s = s.Remove(0, minstr.Length);
+                    return -Convert.ToDouble(s);
+                }
                 return Convert.ToDouble(s);
             }
             catch (Exception e)
@@ -168,6 +185,11 @@ namespace SimpelCalc
                 {
                     return 0m;
                 }
+                if(s.StartsWith(minstr))
+                {
+                    s = s.Remove(0, minstr.Length);
+                    return -Convert.ToDecimal(s);
+                }
                 return Convert.ToDecimal(s);
             }
             catch (Exception e)
@@ -186,6 +208,11 @@ namespace SimpelCalc
                 if (nullto0 && s == "")
                 {
                     return 0;
+                }
+                if(s.StartsWith(minstr))
+                {
+                    s = s.Remove(0, minstr.Length);
+                    return -Convert.ToInt64(s);
                 }
                 return Convert.ToInt64(s);
             }
