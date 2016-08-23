@@ -55,6 +55,7 @@ namespace SimpelCalc
 
         private decimal bracts(string inp)
         {
+            inp = inp.Replace("0(", "0*(").Replace("1(", "1*(").Replace("2(", "2*(").Replace("3(", "3*(").Replace("4(", "4*(").Replace("5(", "5*(").Replace("6(", "6*(").Replace("7(", "7*(").Replace("8(", "8*(").Replace("9(", "9*(");
             string tmp, edit = inp, editA = edit;
             string[] tmpArray;
             string tmperg;
