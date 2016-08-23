@@ -4,11 +4,10 @@ namespace SimpelCalc
 {
     class Calcs
     {
-        public int decpl;
         public bool errto0;
         public bool nullto0;
         public int mode;
-        private bool err;
+        public bool err;
         private static decimal pi = 3.1415926535897932384626433833m;
         private static string minstr = "minus";
 
@@ -17,12 +16,12 @@ namespace SimpelCalc
             mode = 0;
             errto0 = false;
             nullto0 = false;
-            decpl = 2;
+            err = true;
         }
-        public string recalc(string inp)
+        public decimal recalc(string inp)
         {
             err = false;
-            decimal erg;
+            decimal erg = 0;
             inp = inp.Replace("pi", Convert.ToString(pi));
             try
             {
@@ -31,21 +30,21 @@ namespace SimpelCalc
             catch (Exception)
             {
                 err = true;
-                erg = -1;
-                return "Error";
             }
             if (err)
             {
-                return "Error";
+                return -1;
             }
             else
             {
-                return (Math.Round(erg, decpl)).ToString();
+                return erg;
             }
         }
         private decimal stmin(string inp)
         {
-            if(inp.StartsWith("-"))
+            if (!inp.Contains("-"))
+                return bracts(inp);
+            if (inp.StartsWith("-"))
             {
                 inp = minstr + inp.Remove(0, 1);
             }
@@ -55,6 +54,8 @@ namespace SimpelCalc
 
         private decimal bracts(string inp)
         {
+            if (!inp.Contains("("))
+                return addsub(inp);
             inp = inp.Replace("0(", "0*(").Replace("1(", "1*(").Replace("2(", "2*(").Replace("3(", "3*(").Replace("4(", "4*(").Replace("5(", "5*(").Replace("6(", "6*(").Replace("7(", "7*(").Replace("8(", "8*(").Replace("9(", "9*(");
             string tmp, edit = inp, editA = edit;
             string[] tmpArray;
@@ -81,16 +82,12 @@ namespace SimpelCalc
         }
         private decimal addsub(string inp)
         {
+            if (!inp.Contains("+") && !inp.Contains("-"))
+                return multiDivi(inp);
             decimal erg = 0;
             string[] teil1 = inp.Split('+');
             string[] teil2 = teil1[0].Split('-');
             int i = 1;
-           /* if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/") || teil2[0].Equals(""))
-            {
-                erg = erg - multiDivi(teil2[0] + teil2[1]);
-                i = 2;
-            }
-            else*/
             erg = erg + multiDivi(teil2[0]);
             for (; i < teil2.Length; i++)
             {
@@ -100,12 +97,6 @@ namespace SimpelCalc
             {
                 teil2 = teil1[d].Split('-');
                 i = 1;
-              /*  if (teil2[0].EndsWith("*") || teil2[0].EndsWith("/") || teil2[0].Equals(""))
-                {
-                    erg = erg - multiDivi(teil2[0] + teil2[0]);
-                    i = 2;
-                }
-                else */
                 erg = erg + multiDivi(teil2[0]);
                 for (; i < teil2.Length; i++)
                 {
@@ -117,6 +108,8 @@ namespace SimpelCalc
 
         private decimal multiDivi(string inp)
         {
+            if (!inp.Contains("*")&&!inp.Contains("/"))
+                return pot(inp);
             decimal erg = 1;
             string[] multi = inp.Split('*');
             if (multi[0] == "")
@@ -137,6 +130,8 @@ namespace SimpelCalc
 
         private decimal pot(string inp)
         {
+            if (!inp.Contains("^"))
+                return useE(inp);
             string[] teil1 = inp.Split('^');
             if (teil1.Length == 1)
             {
@@ -230,6 +225,8 @@ namespace SimpelCalc
 
         private decimal useE(string inp)
         {
+            if (!inp.Contains("E"))
+                return usee(inp);
             string[] teil1 = inp.Split('e');
             if (teil1.Length == 1)
             {
@@ -247,6 +244,9 @@ namespace SimpelCalc
         }
         private decimal usee(string inp)
         {
+
+            if (!inp.Contains("e"))
+                return Factorial(inp);
             string[] teil1 = inp.Split('e');
             if (teil1.Length == 1)
             {
@@ -293,19 +293,32 @@ namespace SimpelCalc
         }
         private Int64 fibonacci(Int64 inp)
         {
-            if (inp == 1 || inp == 2)
-                return 1;
             if (inp == 0)
-                return 0;
-            if (inp > 2)
             {
-                return fibonacci(inp - 1) + fibonacci(inp - 2);
+                return 0;
             }
-            err = true;
-            return -1;
+            if (inp == 2|| inp == 1)
+            { 
+                return 1;
+            }
+            if (inp < 0)
+            {
+                err = true;
+                return -1;
+            }
+            int erg = 0, erg1 = 1, erg2 = 1;
+            for (int i=2;i< inp;i++)
+            {
+                erg = erg1 + erg2;
+                erg2 = erg1;
+                erg1 = erg;
+            }
+            return erg;
         }
         private decimal sin(string inp)
         {
+            if (!inp.Contains("sin"))
+                return cos(inp);
             if (inp.StartsWith("sin"))
             {
                 inp = inp.Remove(0, 3);
@@ -320,6 +333,8 @@ namespace SimpelCalc
         }
         private decimal cos(string inp)
         {
+            if (!inp.Contains("cos"))
+                return tan(inp);
             if (inp.StartsWith("cos"))
             {
                 inp = inp.Remove(0, 3);
@@ -334,6 +349,8 @@ namespace SimpelCalc
         }
         private decimal tan(string inp)
         {
+            if (!inp.Contains("tan"))
+                return toDecimal(inp);
             if (inp.StartsWith("tan"))
             {
                 inp = inp.Remove(0, 3);

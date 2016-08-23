@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SimpelCalc
@@ -14,6 +7,7 @@ namespace SimpelCalc
     {
 
         private Calcs calcs;
+        private decimal erg;
         public Form1()
         {
             calcs = new Calcs();
@@ -26,7 +20,8 @@ namespace SimpelCalc
             deg.Checked = false;
             grad.Checked = false;
             calcs.mode = 0;
-            output.Text = calcs.recalc(input.Text);
+            erg = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void deg_Click(object sender, EventArgs e)
@@ -35,7 +30,8 @@ namespace SimpelCalc
             deg.Checked = true;
             grad.Checked = false;
             calcs.mode = 1;
-            output.Text = calcs.recalc(input.Text);
+            erg = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void grad_Click(object sender, EventArgs e)
@@ -44,7 +40,8 @@ namespace SimpelCalc
             deg.Checked = false;
             grad.Checked = true;
             calcs.mode = 2;
-            output.Text = calcs.recalc(input.Text);
+            erg = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void emptyTo0_Click(object sender, EventArgs e)
@@ -61,7 +58,8 @@ namespace SimpelCalc
             }
 
             calcs.nullto0 = emptyTo0.Checked;
-            output.Text = calcs.recalc(input.Text);
+            erg = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void convertErrorTo0_Click(object sender, EventArgs e)
@@ -76,24 +74,38 @@ namespace SimpelCalc
                 emptyTo0.Checked = false;
             }
             calcs.errto0 = convertErrorTo0.Checked;
-            output.Text = calcs.recalc(input.Text);
+            erg = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void input_TextChanged(object sender, EventArgs e)
         {
-            output.Text = calcs.recalc(input.Text);
+            erg = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void decpoints_Scroll(object sender, EventArgs e)
         {
             labelDecPoints.Text = "decimal points: " + decpoints.Value;
-            calcs.decpl = decpoints.Value;
-            output.Text = calcs.recalc(input.Text);
+            reprint();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
+
+        private void reprint()
+        {
+            if(calcs.err)
+            {
+                output.Text = "Error";
+            }
+            else
+            {
+                output.Text = Convert.ToString(Math.Round(erg, decpoints.Value));
+            }
+        }
+
     }
 }
