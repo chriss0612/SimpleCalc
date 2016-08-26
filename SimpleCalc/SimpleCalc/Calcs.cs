@@ -56,7 +56,11 @@ namespace SimpelCalc
         {
             if (!inp.Contains("("))
                 return addsub(inp);
-            inp = inp.Replace("0(", "0*(").Replace("1(", "1*(").Replace("2(", "2*(").Replace("3(", "3*(").Replace("4(", "4*(").Replace("5(", "5*(").Replace("6(", "6*(").Replace("7(", "7*(").Replace("8(", "8*(").Replace("9(", "9*(");
+            for(int i=0;i<10;i++)
+            {
+                inp = inp.Replace(Convert.ToString(i)+"(",Convert.ToString(i)+"*(").Replace(")"+Convert.ToString(i), ")*"+Convert.ToString(i));
+            }
+            //inp = inp.Replace("0(", "0*(").Replace("1(", "1*(").Replace("2(", "2*(").Replace("3(", "3*(").Replace("4(", "4*(").Replace("5(", "5*(").Replace("6(", "6*(").Replace("7(", "7*(").Replace("8(", "8*(").Replace("9(", "9*(");
             string tmp, edit = inp, editA = edit;
             string[] tmpArray;
             string tmperg;
