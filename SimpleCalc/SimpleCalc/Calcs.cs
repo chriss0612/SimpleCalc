@@ -293,7 +293,7 @@ namespace SimpelCalc
             {
                 return fibonacci(toInt(inp.Remove(0, 1)));
             }
-            return sin(inp);
+            return arcsin(inp);
         }
         private Int64 fibonacci(Int64 inp)
         {
@@ -321,8 +321,6 @@ namespace SimpelCalc
         }
         private decimal sin(string inp)
         {
-            if (!inp.Contains("sin"))
-                return cos(inp);
             if (inp.StartsWith("sin"))
             {
                 inp = inp.Remove(0, 3);
@@ -337,8 +335,6 @@ namespace SimpelCalc
         }
         private decimal cos(string inp)
         {
-            if (!inp.Contains("cos"))
-                return tan(inp);
             if (inp.StartsWith("cos"))
             {
                 inp = inp.Remove(0, 3);
@@ -353,8 +349,6 @@ namespace SimpelCalc
         }
         private decimal tan(string inp)
         {
-            if (!inp.Contains("tan"))
-                return toDecimal(inp);
             if (inp.StartsWith("tan"))
             {
                 inp = inp.Remove(0, 3);
@@ -366,6 +360,48 @@ namespace SimpelCalc
                     return Convert.ToDecimal(Math.Tan(GradToRad(toDouble(inp))));
             }
             return toDecimal(inp);
+        }
+        private decimal arcsin(string inp)
+        {
+            if (inp.StartsWith("arcsin"))
+            {
+                inp = inp.Remove(0, 6);
+                if (mode == 0)
+                    return Convert.ToDecimal(Math.Asin(toDouble(inp)));
+                if (mode == 1)
+                    return Convert.ToDecimal(Math.Asin(DegToRad(toDouble(inp))));
+                if (mode == 2)
+                    return Convert.ToDecimal(Math.Asin(GradToRad(toDouble(inp))));
+            }
+            return arccos(inp);
+        }
+        private decimal arccos(string inp)
+        {
+            if (inp.StartsWith("arccos"))
+            {
+                inp = inp.Remove(0, 6);
+                if (mode == 0)
+                    return Convert.ToDecimal(Math.Acos(toDouble(inp)));
+                if (mode == 1)
+                    return Convert.ToDecimal(Math.Acos(DegToRad(toDouble(inp))));
+                if (mode == 2)
+                    return Convert.ToDecimal(Math.Acos(GradToRad(toDouble(inp))));
+            }
+            return arctan(inp);
+        }
+        private decimal arctan(string inp)
+        {
+            if (inp.StartsWith("arctan"))
+            {
+                inp = inp.Remove(0, 6);
+                if (mode == 0)
+                    return Convert.ToDecimal(Math.Atan(toDouble(inp)));
+                if (mode == 1)
+                    return Convert.ToDecimal(Math.Atan(DegToRad(toDouble(inp))));
+                if (mode == 2)
+                    return Convert.ToDecimal(Math.Atan(GradToRad(toDouble(inp))));
+            }
+            return sin(inp);
         }
         private double GradToRad(double inp)
         {
