@@ -118,43 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DivideByZero" xml:space="preserve">
-    <value>You tried to devide by zero!</value>
+    <value>Division durch null nicht möglich!</value>
   </data>
   <data name="ErrConvert" xml:space="preserve">
-    <value>There was an error in the conversion!</value>
+    <value>Fehler bei der umwandlung!</value>
   </data>
   <data name="NullConvert" xml:space="preserve">
-    <value>You tried to convert null!</value>
+    <value>Leere Zeichenketten können nicht umgewandelt werden!</value>
   </data>
   <data name="PotAndE" xml:space="preserve">
-    <value>You can not use e and E, e and ^, E and ^ in one number (Try using brackets)</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="DefaultKey" type="System.Int32, mscorlib">
-    <value>-1</value>
-  </data>
-  <data name="NullConvertIntKey" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="ErrConvertDecimalKey" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="DivideByZeroKey" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="PotAndEKey" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="ErrConvertDoubleKey" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="ErrConvertIntKey" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="NullConvertDecimalKey" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="NullConvertDoubleKey" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>Du kannst nur Potenzen oder e in einer Zahl verwenden (Versuche es mit Klammern!)</value>
   </data>
 </root>

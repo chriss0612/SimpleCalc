@@ -97,9 +97,33 @@ namespace SimpelCalc
 
         private void reprint()
         {
-            if(calcs.err)
+            if (calcs.err)
             {
-                output.Text = "Error";
+                if (calcs.errkey == Properties.Resources.DefaultKey)
+                {
+                    output.Text = "Error";
+                }
+                else if (calcs.errkey == Properties.Resources.DivideByZeroKey)
+                {
+                    output.Text = "Error: (" + calcs.errkey + ") " + Properties.Resources.DivideByZero;
+                }
+                else if (calcs.errkey == Properties.Resources.NullConvertDecimalKey|| calcs.errkey == Properties.Resources.NullConvertDoubleKey || calcs.errkey == Properties.Resources.NullConvertIntKey)
+                {
+                    output.Text = "Error: (" + calcs.errkey + ") " + Properties.Resources.NullConvert;
+                }
+                else if (calcs.errkey == Properties.Resources.ErrConvertDoubleKey || calcs.errkey == Properties.Resources.ErrConvertDecimalKey || calcs.errkey == Properties.Resources.ErrConvertIntKey)
+                {
+                    output.Text = "Error: (" + calcs.errkey + ") " + Properties.Resources.ErrConvert;
+                }
+                else if (calcs.errkey == Properties.Resources.PotAndEKey)
+                {
+                    output.Text = "Error: (" + calcs.errkey + ") " + Properties.Resources.PotAndE;
+                }
+                else
+                {
+                    output.Text = "Error: " + calcs.errkey;
+                }
+                
             }
             else
             {

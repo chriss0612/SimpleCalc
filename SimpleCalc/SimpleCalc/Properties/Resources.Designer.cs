@@ -22,7 +22,7 @@ namespace SimpelCalc.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SimpelCalc.Properties {
         ///   Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SimpelCalc.Properties.Resources", typeof(Resources).Assembly);
@@ -51,12 +51,138 @@ namespace SimpelCalc.Properties {
         ///   Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie -1.
+        /// </summary>
+        public static int DefaultKey {
+            get {
+                object obj = ResourceManager.GetObject("DefaultKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You tried to devide by zero! ähnelt.
+        /// </summary>
+        public static string DivideByZero {
+            get {
+                return ResourceManager.GetString("DivideByZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 0.
+        /// </summary>
+        public static int DivideByZeroKey {
+            get {
+                object obj = ResourceManager.GetObject("DivideByZeroKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die There was an error in the conversion! ähnelt.
+        /// </summary>
+        public static string ErrConvert {
+            get {
+                return ResourceManager.GetString("ErrConvert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 1.
+        /// </summary>
+        public static int ErrConvertDecimalKey {
+            get {
+                object obj = ResourceManager.GetObject("ErrConvertDecimalKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 2.
+        /// </summary>
+        public static int ErrConvertDoubleKey {
+            get {
+                object obj = ResourceManager.GetObject("ErrConvertDoubleKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 3.
+        /// </summary>
+        public static int ErrConvertIntKey {
+            get {
+                object obj = ResourceManager.GetObject("ErrConvertIntKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You tried to convert null! ähnelt.
+        /// </summary>
+        public static string NullConvert {
+            get {
+                return ResourceManager.GetString("NullConvert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 4.
+        /// </summary>
+        public static int NullConvertDecimalKey {
+            get {
+                object obj = ResourceManager.GetObject("NullConvertDecimalKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 5.
+        /// </summary>
+        public static int NullConvertDoubleKey {
+            get {
+                object obj = ResourceManager.GetObject("NullConvertDoubleKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 6.
+        /// </summary>
+        public static int NullConvertIntKey {
+            get {
+                object obj = ResourceManager.GetObject("NullConvertIntKey", resourceCulture);
+                return ((int)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can not use e and E, e and ^, E and ^ in one number (Try using brackets) ähnelt.
+        /// </summary>
+        public static string PotAndE {
+            get {
+                return ResourceManager.GetString("PotAndE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Ressource vom Typ System.Int32 ähnlich wie 7.
+        /// </summary>
+        public static int PotAndEKey {
+            get {
+                object obj = ResourceManager.GetObject("PotAndEKey", resourceCulture);
+                return ((int)(obj));
             }
         }
     }

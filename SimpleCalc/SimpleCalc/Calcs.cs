@@ -10,6 +10,7 @@ namespace SimpelCalc
         public bool err;
         private static decimal pi = 3.1415926535897932384626433833m;
         private static string minstr = "minus";
+        public Int32 errkey = Properties.Resources.DefaultKey;
 
         public Calcs()
         {
@@ -21,6 +22,7 @@ namespace SimpelCalc
         public decimal recalc(string inp)
         {
             err = false;
+            errkey = Properties.Resources.DefaultKey;
             decimal erg = 0;
             inp = inp.Replace("pi", Convert.ToString(pi));
             try
@@ -42,6 +44,11 @@ namespace SimpelCalc
         }
         private decimal stmin(string inp)
         {
+            if (inp.Contains(minstr))
+            {
+                err = true;
+                return -1;
+            }
             if (!inp.Contains("-"))
                 return bracts(inp);
             if (inp.StartsWith("-"))
@@ -126,6 +133,12 @@ namespace SimpelCalc
                 erg = erg * pot(divi[0]);
                 for (int i = 1; i < divi.Length; i++)
                 {
+                    if(pot(divi[i])==0)
+                    {
+                        err = true;
+                        errkey = Properties.Resources.DivideByZeroKey;
+                        return -1;
+                    }
                     erg = erg / pot(divi[i]);
                 }
             }
@@ -134,8 +147,23 @@ namespace SimpelCalc
 
         private decimal pot(string inp)
         {
-            if (!inp.Contains("^"))
+            int i = 0;
+            if (inp.Contains("E")) i++;
+            if (inp.Contains("e")) i++;
+            if (inp.Contains("^")) i++;
+            if (i == 0)
                 return useE(inp);
+            if (i==1)
+            {
+                if (inp.Contains("E")) return useE(inp);
+                if (inp.Contains("e")) return usee(inp);
+            }
+            else
+            {
+                err = true;
+                errkey = Properties.Resources.PotAndEKey;
+                return -1;
+            }
             string[] teil1 = inp.Split('^');
             if (teil1.Length == 1)
             {
@@ -161,20 +189,32 @@ namespace SimpelCalc
                 {
                     return 0d;
                 }
-                if(s.StartsWith(minstr))
+                if(s=="")
+                {
+                    err = true;
+                    errkey = Properties.Resources.NullConvertDoubleKey;
+                    return -1;
+                }
+                if (s.StartsWith(minstr))
                 {
                     s = s.Remove(0, minstr.Length);
                     return -Convert.ToDouble(s);
                 }
                 return Convert.ToDouble(s);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (errto0)
                 {
                     return 0;
                 }
-                throw e;
+                else
+                {
+                    err = true;
+                    errkey = Properties.Resources.ErrConvertDoubleKey;
+                    return -1;
+                }
+
             }
         }
         private decimal toDecimal(string s)
@@ -185,20 +225,31 @@ namespace SimpelCalc
                 {
                     return 0m;
                 }
-                if(s.StartsWith(minstr))
+                if (s == "")
+                {
+                    err = true;
+                    errkey = Properties.Resources.NullConvertDecimalKey;
+                    return -1;
+                }
+                if (s.StartsWith(minstr))
                 {
                     s = s.Remove(0, minstr.Length);
                     return -Convert.ToDecimal(s);
                 }
                 return Convert.ToDecimal(s);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (errto0)
                 {
                     return 0;
                 }
-                throw e;
+                else
+                {
+                    err = true;
+                    errkey = Properties.Resources.ErrConvertDecimalKey;
+                    return -1;
+                }
             }
         }
         private Int64 toInt(string s)
@@ -209,20 +260,31 @@ namespace SimpelCalc
                 {
                     return 0;
                 }
-                if(s.StartsWith(minstr))
+                if (s == "")
+                {
+                    err = true;
+                    errkey = Properties.Resources.NullConvertIntKey;
+                    return -1;
+                }
+                if (s.StartsWith(minstr))
                 {
                     s = s.Remove(0, minstr.Length);
                     return -Convert.ToInt64(s);
                 }
                 return Convert.ToInt64(s);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (errto0)
                 {
                     return 0;
                 }
-                throw e;
+                else
+                {
+                    err = true;
+                    errkey = Properties.Resources.ErrConvertIntKey;
+                    return -1;
+                }
             }
         }
 
