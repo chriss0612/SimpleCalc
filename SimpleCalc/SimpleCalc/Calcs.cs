@@ -155,6 +155,7 @@ namespace SimpelCalc
             if (inp.StartsWith("arcsin")) i++;
             if (inp.StartsWith("arccos")) i++;
             if (inp.StartsWith("arctan")) i++;
+            if (inp.Contains("%")) i++;
             if (inp.EndsWith("!")) i++;
             if (inp.EndsWith("F") || inp.EndsWith("f")) i++;
             if (inp.StartsWith("log")) i++;
@@ -173,6 +174,7 @@ namespace SimpelCalc
                 if (inp.StartsWith("cos")) return cos(inp);
                 if (inp.StartsWith("tan")) return tan(inp);
                 if (inp.StartsWith("log")) return log(inp);
+                if (inp.Contains("%")) return modulo(inp);
                 if (inp.Contains("^")) return pot(inp);
                 
             }
@@ -181,6 +183,15 @@ namespace SimpelCalc
             return -1;
         }
 
+        private decimal modulo(string inp)
+        {
+            if (inp.Contains("%"))
+            {
+                string[] split = inp.Split('%');
+                return toInt(split[0]) % toInt(split[1]);
+            }
+            return toDecimal(inp);
+        }
         private decimal pot(string inp)
         {
             string[] teil1 = inp.Split('^');
