@@ -119,7 +119,7 @@ namespace SimpelCalc
         private decimal multiDivi(string inp)
         {
             if (!inp.Contains("*")&&!inp.Contains("/"))
-                return pot(inp);
+                return ManageNumbers(inp);
             decimal erg = 1;
             string[] multi = inp.Split('*');
             if (multi[0] == "")
@@ -129,7 +129,7 @@ namespace SimpelCalc
             for (int d = 0; d < multi.Length; d++)
             {
                 string[] divi = multi[d].Split('/');
-                erg = erg * pot(divi[0]);
+                erg = erg * ManageNumbers(divi[0]);
                 for (int i = 1; i < divi.Length; i++)
                 {
                     if(pot(divi[i])==0)
@@ -138,44 +138,51 @@ namespace SimpelCalc
                         errkey = Properties.Resources.DivideByZeroKey;
                         return -1;
                     }
-                    erg = erg / pot(divi[i]);
+                    erg = erg / ManageNumbers(divi[i]);
                 }
             }
             return erg;
         }
-
-        private decimal pot(string inp)
+        private decimal ManageNumbers(string inp)
         {
             int i = 0;
             if (inp.Contains("E")) i++;
             if (inp.Contains("^")) i++;
+            if (inp.Contains("root")) i++;
             if (inp.StartsWith("sin")) i++;
             if (inp.StartsWith("cos")) i++;
             if (inp.StartsWith("tan")) i++;
-			if (inp.EndsWith("!")) i++;
-			if (inp.EndsWith("F") || inp.EndsWith("f")) i++;
-			if (inp.StartsWith("log")) i++;
+            if (inp.StartsWith("arcsin")) i++;
+            if (inp.StartsWith("arccos")) i++;
+            if (inp.StartsWith("arctan")) i++;
+            if (inp.EndsWith("!")) i++;
+            if (inp.EndsWith("F") || inp.EndsWith("f")) i++;
+            if (inp.StartsWith("log")) i++;
             if (i == 0)
                 return toDecimal(inp);
-            if (i==1)
+            if (i == 1)
             {
                 if (inp.Contains("E")) return useE(inp);
-				if (inp.EndsWith("!")) return Factorial(inp);
-				if (inp.EndsWith("F") || inp.EndsWith("f")) return fibonacci(inp);
-				if (inp.StartsWith("arcsin")) return arcsin(inp);
-				if (inp.StartsWith("arccos")) return arccos(inp);
-				if (inp.StartsWith("arctan")) return arctan(inp);
-				if (inp.StartsWith("sin")) return sin(inp);
-				if (inp.StartsWith("cos")) return cos(inp);
-				if (inp.StartsWith("tan")) return tan(inp);
-				if (inp.StartsWith("log")) return log(inp);
+                if (inp.EndsWith("!")) return Factorial(inp);
+                if (inp.EndsWith("root")) return root(inp);
+                if (inp.EndsWith("F") || inp.EndsWith("f")) return fibonacci(inp);
+                if (inp.StartsWith("arcsin")) return arcsin(inp);
+                if (inp.StartsWith("arccos")) return arccos(inp);
+                if (inp.StartsWith("arctan")) return arctan(inp);
+                if (inp.StartsWith("sin")) return sin(inp);
+                if (inp.StartsWith("cos")) return cos(inp);
+                if (inp.StartsWith("tan")) return tan(inp);
+                if (inp.StartsWith("log")) return log(inp);
+                if (inp.Contains("^")) return pot(inp);
+                
             }
-            else
-            {
-                err = true;
-                errkey = Properties.Resources.PotAndEKey;
-                return -1;
-            }
+            err = true;
+            errkey = Properties.Resources.PotAndEKey;
+            return -1;
+        }
+
+        private decimal pot(string inp)
+        {
             string[] teil1 = inp.Split('^');
             if (teil1.Length == 1)
             {
@@ -191,8 +198,6 @@ namespace SimpelCalc
                 return -1m;
             }
         }
-
-
         public double toDouble(string s)
         {
             try
@@ -303,12 +308,10 @@ namespace SimpelCalc
 
         private decimal useE(string inp)
         {
-            if (!inp.Contains("E"))
-                return Factorial(inp);
-            string[] teil1 = inp.Split('e');
+            string[] teil1 = inp.Split('E');
             if (teil1.Length == 1)
             {
-                return Factorial(teil1[0]);
+                return toDecimal(teil1[0]);
             }
             else if (teil1.Length == 2)
             {
@@ -326,7 +329,7 @@ namespace SimpelCalc
 			{
                 return Factorial(toInt(inp.Remove(inp.Length-1, 1)));
             }
-            return fibonacci(inp);
+            return toDecimal(inp);
         }
         private Int64 Factorial(Int64 inp)
         {
@@ -347,7 +350,7 @@ namespace SimpelCalc
             {
                 return fibonacci(toInt(inp.Remove(inp.Length-1, 1)));
             }
-            return arcsin(inp);
+            return toDecimal(inp);
         }
         private Int64 fibonacci(Int64 inp)
         {
@@ -385,7 +388,16 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Sin(GradToRad(toDouble(inp))));
             }
-            return cos(inp);
+            return toDecimal(inp);
+        }
+        private decimal root(string inp)
+        {
+            if (inp.StartsWith("root"))
+            {
+                inp = inp.Remove(0, 4);
+                return Convert.ToDecimal(Math.Sqrt(toDouble(inp)));
+            }
+            return toDecimal(inp);
         }
         private decimal cos(string inp)
         {
@@ -399,7 +411,7 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Cos(GradToRad(toDouble(inp))));
             }
-            return tan(inp);
+            return toDecimal(inp);
         }
         private decimal tan(string inp)
         {
@@ -413,7 +425,7 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Tan(GradToRad(toDouble(inp))));
             }
-            return log(inp);
+            return toDecimal(inp);
         }
         private decimal arcsin(string inp)
         {
@@ -427,7 +439,7 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Asin(GradToRad(toDouble(inp))));
             }
-            return arccos(inp);
+            return toDecimal(inp);
         }
         private decimal arccos(string inp)
         {
@@ -441,7 +453,7 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Acos(GradToRad(toDouble(inp))));
             }
-            return arctan(inp);
+            return toDecimal(inp);
         }
         private decimal arctan(string inp)
         {
@@ -455,7 +467,7 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Atan(GradToRad(toDouble(inp))));
             }
-            return sin(inp);
+            return toDecimal(inp);
         }
         private double GradToRad(double inp)
         {
