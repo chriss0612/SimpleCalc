@@ -20,8 +20,11 @@ namespace SimpelCalc
             deg.Checked = false;
             grad.Checked = false;
             calcs.mode = 0;
-            erg = calcs.recalc(input.Text);
-            reprint();
+            if (input.Text.Contains("sin") || input.Text.Contains("cos") || input.Text.Contains("tan"))
+            {
+                erg = calcs.recalc(input.Text);
+                reprint();
+            }
         }
 
         private void deg_Click(object sender, EventArgs e)
@@ -30,8 +33,11 @@ namespace SimpelCalc
             deg.Checked = true;
             grad.Checked = false;
             calcs.mode = 1;
-            erg = calcs.recalc(input.Text);
-            reprint();
+            if (input.Text.Contains("sin") || input.Text.Contains("cos") || input.Text.Contains("tan"))
+            {
+                erg = calcs.recalc(input.Text);
+                reprint();
+            }
         }
 
         private void grad_Click(object sender, EventArgs e)
@@ -40,8 +46,11 @@ namespace SimpelCalc
             deg.Checked = false;
             grad.Checked = true;
             calcs.mode = 2;
-            erg = calcs.recalc(input.Text);
-            reprint();
+            if (input.Text.Contains("sin")|| input.Text.Contains("cos")|| input.Text.Contains("tan"))
+            {
+                erg = calcs.recalc(input.Text);
+                reprint();
+            }
         }
 
         private void emptyTo0_Click(object sender, EventArgs e)
@@ -131,5 +140,26 @@ namespace SimpelCalc
             }
         }
 
+        private void eToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            eToolStripMenuItem.Checked = true;
+            calcs.logbase = Calcs.eul;
+            if (input.Text.Contains("log"))
+            {
+                erg = calcs.recalc(input.Text);
+                reprint();
+            }
+        }
+
+        private void toolStripComboBox1_Click(object sender, EventArgs e)
+        {
+            eToolStripMenuItem.Checked = false;
+            calcs.logbase = calcs.toDouble(toolStripComboBox1.Text);
+            if (input.Text.Contains("log"))
+            {
+                erg = calcs.recalc(input.Text);
+                reprint();
+            }
+        }
     }
 }

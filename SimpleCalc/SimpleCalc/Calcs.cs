@@ -9,15 +9,19 @@ namespace SimpelCalc
         public int mode;
         public bool err;
         private static decimal pi = 3.1415926535897932384626433833m;
+        public static double eul = 2.71828182845904523536d;
         private static string minstr = "minus";
         public Int32 errkey = Properties.Resources.DefaultKey;
-
+		
+		public double logbase;
+		
         public Calcs()
         {
             mode = 0;
             errto0 = false;
             nullto0 = false;
             err = true;
+			logbase = eul;
         }
         public decimal recalc(string inp)
         {
@@ -25,6 +29,7 @@ namespace SimpelCalc
             errkey = Properties.Resources.DefaultKey;
             decimal erg = 0;
             inp = inp.Replace("pi", Convert.ToString(pi));
+			inp = inp.Replace("e", Convert.ToString(eul));
             try
             {
                 erg = stmin(inp);
@@ -44,18 +49,13 @@ namespace SimpelCalc
         }
         private decimal stmin(string inp)
         {
-            if (inp.Contains(minstr))
-            {
-                err = true;
-                return -1;
-            }
             if (!inp.Contains("-"))
                 return bracts(inp);
             if (inp.StartsWith("-"))
             {
                 inp = minstr + inp.Remove(0, 1);
             }
-            inp = inp.Replace("/-", "/"+minstr).Replace("*-", "*"+minstr).Replace("+-", "+"+minstr).Replace("--", "-"+minstr).Replace("(-", "(" + minstr);
+            inp = inp.Replace("/-", "/" + minstr).Replace("*-", "*" + minstr).Replace("+-", "+" + minstr).Replace("--", "-" + minstr).Replace("(-", "(" + minstr).Replace("e-", "e" + minstr).Replace("E-", "E" + minstr).Replace("sin-", "sin" + minstr).Replace("cos-", "cos" + minstr).Replace("tan-", "tan" + minstr);
             return bracts(inp);
         }
 
@@ -67,7 +67,6 @@ namespace SimpelCalc
             {
                 inp = inp.Replace(Convert.ToString(i)+"(",Convert.ToString(i)+"*(").Replace(")"+Convert.ToString(i), ")*"+Convert.ToString(i));
             }
-            //inp = inp.Replace("0(", "0*(").Replace("1(", "1*(").Replace("2(", "2*(").Replace("3(", "3*(").Replace("4(", "4*(").Replace("5(", "5*(").Replace("6(", "6*(").Replace("7(", "7*(").Replace("8(", "8*(").Replace("9(", "9*(");
             string tmp, edit = inp, editA = edit;
             string[] tmpArray;
             string tmperg;
@@ -149,14 +148,27 @@ namespace SimpelCalc
         {
             int i = 0;
             if (inp.Contains("E")) i++;
-            if (inp.Contains("e")) i++;
             if (inp.Contains("^")) i++;
+            if (inp.StartsWith("sin")) i++;
+            if (inp.StartsWith("cos")) i++;
+            if (inp.StartsWith("tan")) i++;
+			if (inp.EndsWith("!")) i++;
+			if (inp.EndsWith("F") || inp.EndsWith("f")) i++;
+			if (inp.StartsWith("log")) i++;
             if (i == 0)
-                return useE(inp);
+                return toDecimal(inp);
             if (i==1)
             {
                 if (inp.Contains("E")) return useE(inp);
-                if (inp.Contains("e")) return usee(inp);
+				if (inp.EndsWith("!")) return Factorial(inp);
+				if (inp.EndsWith("F") || inp.EndsWith("f")) return fibonacci(inp);
+				if (inp.StartsWith("arcsin")) return arcsin(inp);
+				if (inp.StartsWith("arccos")) return arccos(inp);
+				if (inp.StartsWith("arctan")) return arctan(inp);
+				if (inp.StartsWith("sin")) return sin(inp);
+				if (inp.StartsWith("cos")) return cos(inp);
+				if (inp.StartsWith("tan")) return tan(inp);
+				if (inp.StartsWith("log")) return log(inp);
             }
             else
             {
@@ -181,7 +193,7 @@ namespace SimpelCalc
         }
 
 
-        private double toDouble(string s)
+        public double toDouble(string s)
         {
             try
             {
@@ -292,26 +304,6 @@ namespace SimpelCalc
         private decimal useE(string inp)
         {
             if (!inp.Contains("E"))
-                return usee(inp);
-            string[] teil1 = inp.Split('e');
-            if (teil1.Length == 1)
-            {
-                return usee(teil1[0]);
-            }
-            else if (teil1.Length == 2)
-            {
-                return (toDecimal(teil1[0]) * Convert.ToDecimal(Math.Pow(10, toDouble(teil1[1]))));
-            }
-            else
-            {
-                err = true;
-                return -1m;
-            }
-        }
-        private decimal usee(string inp)
-        {
-
-            if (!inp.Contains("e"))
                 return Factorial(inp);
             string[] teil1 = inp.Split('e');
             if (teil1.Length == 1)
@@ -330,9 +322,9 @@ namespace SimpelCalc
         }
         private decimal Factorial(string inp)
         {
-            if (inp.StartsWith("!"))
-            {
-                return Factorial(toInt(inp.Remove(0, 1)));
+            if (inp.EndsWith("!"))
+			{
+                return Factorial(toInt(inp.Remove(inp.Length-1, 1)));
             }
             return fibonacci(inp);
         }
@@ -351,9 +343,9 @@ namespace SimpelCalc
         }
         private decimal fibonacci(string inp)
         {
-            if (inp.StartsWith("F") || inp.StartsWith("f"))
+            if (inp.EndsWith("F") || inp.EndsWith("f"))
             {
-                return fibonacci(toInt(inp.Remove(0, 1)));
+                return fibonacci(toInt(inp.Remove(inp.Length-1, 1)));
             }
             return arcsin(inp);
         }
@@ -421,7 +413,7 @@ namespace SimpelCalc
                 if (mode == 2)
                     return Convert.ToDecimal(Math.Tan(GradToRad(toDouble(inp))));
             }
-            return toDecimal(inp);
+            return log(inp);
         }
         private decimal arcsin(string inp)
         {
@@ -472,6 +464,15 @@ namespace SimpelCalc
         private double DegToRad(double inp)
         {
             return (inp / 180) * Convert.ToDouble(pi);
+        }
+		private decimal log(string inp)
+        {
+            if (inp.StartsWith("log"))
+            {
+                inp = inp.Remove(0, 3);
+                return Convert.ToDecimal(Math.Log(toDouble(inp), logbase));
+            }
+            return toDecimal(inp);
         }
     }
 }
