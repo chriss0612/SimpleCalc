@@ -33,11 +33,15 @@
             this.rad = new System.Windows.Forms.ToolStripMenuItem();
             this.deg = new System.Windows.Forms.ToolStripMenuItem();
             this.grad = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.northToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sCIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.to0sToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.emptyTo0 = new System.Windows.Forms.ToolStripMenuItem();
             this.convertErrorTo0 = new System.Windows.Forms.ToolStripMenuItem();
             this.logBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.output = new System.Windows.Forms.TextBox();
             this.decpoints = new System.Windows.Forms.TrackBar();
@@ -45,7 +49,6 @@
             this.label28 = new System.Windows.Forms.Label();
             this.labelDecPoints = new System.Windows.Forms.Label();
             this.input = new System.Windows.Forms.TextBox();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
             this.menuStrip.SuspendLayout();
             this.mainLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.decpoints)).BeginInit();
@@ -70,7 +73,10 @@
             this.modeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.rad,
             this.deg,
-            this.grad});
+            this.grad,
+            this.toolStripSeparator1,
+            this.northToolStripMenuItem,
+            this.sCIToolStripMenuItem});
             this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
             this.modeToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.modeToolStripMenuItem.Text = "Mode";
@@ -80,23 +86,44 @@
             this.rad.Checked = true;
             this.rad.CheckState = System.Windows.Forms.CheckState.Checked;
             this.rad.Name = "rad";
-            this.rad.Size = new System.Drawing.Size(99, 22);
+            this.rad.Size = new System.Drawing.Size(152, 22);
             this.rad.Text = "Rad";
             this.rad.Click += new System.EventHandler(this.rad_Click);
             // 
             // deg
             // 
             this.deg.Name = "deg";
-            this.deg.Size = new System.Drawing.Size(99, 22);
+            this.deg.Size = new System.Drawing.Size(152, 22);
             this.deg.Text = "Deg";
             this.deg.Click += new System.EventHandler(this.deg_Click);
             // 
             // grad
             // 
             this.grad.Name = "grad";
-            this.grad.Size = new System.Drawing.Size(99, 22);
+            this.grad.Size = new System.Drawing.Size(152, 22);
             this.grad.Text = "Grad";
             this.grad.Click += new System.EventHandler(this.grad_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // northToolStripMenuItem
+            // 
+            this.northToolStripMenuItem.Checked = true;
+            this.northToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.northToolStripMenuItem.Name = "northToolStripMenuItem";
+            this.northToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.northToolStripMenuItem.Text = "Normal";
+            this.northToolStripMenuItem.Click += new System.EventHandler(this.northToolStripMenuItem_Click);
+            // 
+            // sCIToolStripMenuItem
+            // 
+            this.sCIToolStripMenuItem.Name = "sCIToolStripMenuItem";
+            this.sCIToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sCIToolStripMenuItem.Text = "SCI";
+            this.sCIToolStripMenuItem.Click += new System.EventHandler(this.sCIToolStripMenuItem_Click);
             // 
             // to0sToolStripMenuItem
             // 
@@ -139,6 +166,12 @@
             this.eToolStripMenuItem.Text = "e";
             this.eToolStripMenuItem.Click += new System.EventHandler(this.eToolStripMenuItem_Click);
             // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBox1.Click += new System.EventHandler(this.toolStripComboBox1_Click);
+            // 
             // mainLayoutPanel
             // 
             this.mainLayoutPanel.ColumnCount = 3;
@@ -178,14 +211,15 @@
             // 
             this.mainLayoutPanel.SetColumnSpan(this.decpoints, 3);
             this.decpoints.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.decpoints.LargeChange = 1;
+            this.decpoints.LargeChange = 4;
             this.decpoints.Location = new System.Drawing.Point(2, 76);
             this.decpoints.Margin = new System.Windows.Forms.Padding(2);
             this.decpoints.Maximum = 28;
+            this.decpoints.Minimum = 1;
             this.decpoints.Name = "decpoints";
             this.decpoints.Size = new System.Drawing.Size(245, 29);
             this.decpoints.TabIndex = 28;
-            this.decpoints.Value = 2;
+            this.decpoints.Value = 3;
             this.decpoints.Scroll += new System.EventHandler(this.decpoints_Scroll);
             // 
             // label0
@@ -197,7 +231,7 @@
             this.label0.Name = "label0";
             this.label0.Size = new System.Drawing.Size(13, 13);
             this.label0.TabIndex = 29;
-            this.label0.Text = "0";
+            this.label0.Text = "1";
             // 
             // label28
             // 
@@ -214,12 +248,12 @@
             // 
             this.labelDecPoints.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelDecPoints.AutoSize = true;
-            this.labelDecPoints.Location = new System.Drawing.Point(81, 59);
+            this.labelDecPoints.Location = new System.Drawing.Point(73, 59);
             this.labelDecPoints.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelDecPoints.Name = "labelDecPoints";
-            this.labelDecPoints.Size = new System.Drawing.Size(86, 13);
+            this.labelDecPoints.Size = new System.Drawing.Size(103, 13);
             this.labelDecPoints.TabIndex = 31;
-            this.labelDecPoints.Text = "decimal points: 2";
+            this.labelDecPoints.Text = "Significant Places: 2";
             // 
             // input
             // 
@@ -231,12 +265,6 @@
             this.input.Size = new System.Drawing.Size(245, 20);
             this.input.TabIndex = 1;
             this.input.TextChanged += new System.EventHandler(this.input_TextChanged);
-            // 
-            // toolStripComboBox1
-            // 
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBox1.Click += new System.EventHandler(this.toolStripComboBox1_Click);
             // 
             // Form1
             // 
@@ -281,6 +309,9 @@
         private System.Windows.Forms.ToolStripMenuItem logBaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem eToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem northToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sCIToolStripMenuItem;
     }
 }
 

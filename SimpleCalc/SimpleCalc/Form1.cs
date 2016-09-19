@@ -12,6 +12,8 @@ namespace SimpelCalc
         {
             calcs = new Calcs();
             InitializeComponent();
+            //toolStripComboBox1.Items.Add()
+            //toolStripComboBox1.SelectedItem;
         }
 
         private void rad_Click(object sender, EventArgs e)
@@ -95,7 +97,7 @@ namespace SimpelCalc
 
         private void decpoints_Scroll(object sender, EventArgs e)
         {
-            labelDecPoints.Text = "decimal points: " + decpoints.Value;
+            labelDecPoints.Text = "Significant Places: " + decpoints.Value;
             reprint();
         }
 
@@ -116,7 +118,7 @@ namespace SimpelCalc
                 {
                     output.Text = "Error: (" + calcs.errkey + ") " + Properties.Resources.DivideByZero;
                 }
-                else if (calcs.errkey == Properties.Resources.NullConvertDecimalKey|| calcs.errkey == Properties.Resources.NullConvertDoubleKey || calcs.errkey == Properties.Resources.NullConvertIntKey)
+                else if (calcs.errkey == Properties.Resources.NullConvertDecimalKey || calcs.errkey == Properties.Resources.NullConvertDoubleKey || calcs.errkey == Properties.Resources.NullConvertIntKey)
                 {
                     output.Text = "Error: (" + calcs.errkey + ") " + Properties.Resources.NullConvert;
                 }
@@ -132,14 +134,20 @@ namespace SimpelCalc
                 {
                     output.Text = "Error: " + calcs.errkey;
                 }
-                
+
             }
             else
             {
-                output.Text = Convert.ToString(Math.Round(erg, decpoints.Value));
+                if (northToolStripMenuItem.Checked)
+                {
+                    output.Text = erg.ToString("G"+decpoints.Value);
+                }
+                if (sCIToolStripMenuItem.Checked)
+                {
+                    output.Text = erg.ToString("E"+decpoints.Value);
+                }
             }
         }
-
         private void eToolStripMenuItem_Click(object sender, EventArgs e)
         {
             eToolStripMenuItem.Checked = true;
@@ -160,6 +168,20 @@ namespace SimpelCalc
                 erg = calcs.recalc(input.Text);
                 reprint();
             }
+        }
+
+        private void northToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            northToolStripMenuItem.Checked = true;
+            sCIToolStripMenuItem.Checked = false;
+            reprint();
+        }
+
+        private void sCIToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            northToolStripMenuItem.Checked = false;
+            sCIToolStripMenuItem.Checked = true;
+            reprint();
         }
     }
 }
