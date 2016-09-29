@@ -165,7 +165,7 @@ namespace SimpelCalc
             {
                 if (inp.Contains("E")) return useE(inp);
                 if (inp.EndsWith("!")) return Factorial(inp);
-                if (inp.EndsWith("root")) return root(inp);
+                if (inp.StartsWith("root")) return root(inp);
                 if (inp.EndsWith("F") || inp.EndsWith("f")) return fibonacci(inp);
                 if (inp.StartsWith("arcsin")) return arcsin(inp);
                 if (inp.StartsWith("arccos")) return arccos(inp);
