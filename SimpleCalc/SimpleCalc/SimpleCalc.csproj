@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calcs.cs" />
+    <Compile Include="Komplex.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

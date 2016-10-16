@@ -7,7 +7,7 @@ namespace SimpelCalc
     {
 
         private Calcs calcs;
-        private decimal erg;
+        private Komplex erg;
         public Form1()
         {
             calcs = new Calcs();
@@ -144,7 +144,7 @@ namespace SimpelCalc
                 }
                 if (sCIToolStripMenuItem.Checked)
                 {
-                    output.Text = erg.ToString("E"+decpoints.Value);
+                    output.Text = erg.Re.ToString("E" + decpoints.Value);
                 }
             }
         }

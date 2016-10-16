@@ -86,42 +86,42 @@
             this.rad.Checked = true;
             this.rad.CheckState = System.Windows.Forms.CheckState.Checked;
             this.rad.Name = "rad";
-            this.rad.Size = new System.Drawing.Size(152, 22);
+            this.rad.Size = new System.Drawing.Size(114, 22);
             this.rad.Text = "Rad";
             this.rad.Click += new System.EventHandler(this.rad_Click);
             // 
             // deg
             // 
             this.deg.Name = "deg";
-            this.deg.Size = new System.Drawing.Size(152, 22);
+            this.deg.Size = new System.Drawing.Size(114, 22);
             this.deg.Text = "Deg";
             this.deg.Click += new System.EventHandler(this.deg_Click);
             // 
             // grad
             // 
             this.grad.Name = "grad";
-            this.grad.Size = new System.Drawing.Size(152, 22);
+            this.grad.Size = new System.Drawing.Size(114, 22);
             this.grad.Text = "Grad";
             this.grad.Click += new System.EventHandler(this.grad_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(111, 6);
             // 
             // northToolStripMenuItem
             // 
             this.northToolStripMenuItem.Checked = true;
             this.northToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.northToolStripMenuItem.Name = "northToolStripMenuItem";
-            this.northToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.northToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.northToolStripMenuItem.Text = "Normal";
             this.northToolStripMenuItem.Click += new System.EventHandler(this.northToolStripMenuItem_Click);
             // 
             // sCIToolStripMenuItem
             // 
             this.sCIToolStripMenuItem.Name = "sCIToolStripMenuItem";
-            this.sCIToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sCIToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.sCIToolStripMenuItem.Text = "SCI";
             this.sCIToolStripMenuItem.Click += new System.EventHandler(this.sCIToolStripMenuItem_Click);
             // 
@@ -175,9 +175,9 @@
             // mainLayoutPanel
             // 
             this.mainLayoutPanel.ColumnCount = 3;
-            this.mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 22F));
+            this.mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.mainLayoutPanel.Controls.Add(this.output, 0, 1);
             this.mainLayoutPanel.Controls.Add(this.decpoints, 0, 3);
             this.mainLayoutPanel.Controls.Add(this.label0, 0, 2);
@@ -237,10 +237,10 @@
             // 
             this.label28.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(234, 58);
+            this.label28.Location = new System.Drawing.Point(228, 59);
             this.label28.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(13, 16);
+            this.label28.Size = new System.Drawing.Size(19, 13);
             this.label28.TabIndex = 30;
             this.label28.Text = "28";
             // 

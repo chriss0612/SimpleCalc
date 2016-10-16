@@ -23,11 +23,11 @@ namespace SimpelCalc
             err = true;
 			logbase = eul;
         }
-        public decimal recalc(string inp)
+        public Komplex recalc(string inp)
         {
             err = false;
             errkey = Properties.Resources.DefaultKey;
-            decimal erg = 0;
+            Komplex erg = new Komplex(0,0);
             inp = inp.Replace("pi", Convert.ToString(pi));
 			inp = inp.Replace("e", Convert.ToString(eul));
             try
@@ -40,14 +40,14 @@ namespace SimpelCalc
             }
             if (err)
             {
-                return -1;
+                return new Komplex(-1, 0);
             }
             else
             {
                 return erg;
             }
         }
-        private decimal stmin(string inp)
+        private Komplex stmin(string inp)
         {
             if (!inp.Contains("-"))
                 return bracts(inp);
@@ -55,13 +55,13 @@ namespace SimpelCalc
             {
                 inp = minstr + inp.Remove(0, 1);
             }
-            inp = inp.Replace("/-", "/" + minstr).Replace("*-", "*" + minstr).Replace("+-", "+" + minstr).Replace("--", "-" + minstr).Replace("(-", "(" + minstr).Replace("e-", "e" + minstr).Replace("E-", "E" + minstr).Replace("sin-", "sin" + minstr).Replace("cos-", "cos" + minstr).Replace("tan-", "tan" + minstr);
+            inp = inp.Replace("/-", "/" + minstr).Replace("*-", "*" + minstr).Replace("+-", "+" + minstr).Replace("--", "-" + minstr).Replace("(-", "(" + minstr).Replace("e-", "e" + minstr).Replace("E-", "E" + minstr).Replace("sin-", "sin" + minstr).Replace("cos-", "cos" + minstr).Replace("tan-", "tan" + minstr).Replace("root-", "root" + minstr);
             return bracts(inp);
         }
 
-        private decimal bracts(string inp)
+        private Komplex bracts(string inp)
         {
-            if (!inp.Contains("("))
+            if (!inp.Contains("(") && !inp.Contains(")"))
                 return addsub(inp);
             for(int i=0;i<10;i++)
             {
@@ -69,13 +69,28 @@ namespace SimpelCalc
             }
             string tmp, edit = inp, editA = edit;
             string[] tmpArray;
+            char[] arr = inp.ToCharArray();
             string tmperg;
+            int a=0,z=0;
+            for (int d = 0; d < arr.Length; d++)
+            {
+                if (arr[d]=='(')
+                {
+                    a++;
+                }
+                if (arr[d] == ')')
+                {
+                    z++;
+                }
+            }
+            if (a < z) for (int i = 0; i < z - a; i++) edit = "(" + edit;
+            if (a > z) for (int i = 0; i < a - z; i++) edit = edit + ")";
             while (true)
             {
                 tmpArray = edit.Split('(');
                 tmp = tmpArray[tmpArray.Length - 1];
                 tmp = tmp.Split(')')[0];
-                tmperg = Convert.ToString(addsub(tmp));
+                tmperg = addsub(tmp).ToString(true);
                 if (tmperg.StartsWith("-"))
                 {
                     tmperg = minstr + tmperg.Remove(0, 1);
@@ -90,11 +105,11 @@ namespace SimpelCalc
             }
             return addsub(edit);
         }
-        private decimal addsub(string inp)
+        private Komplex addsub(string inp)
         {
             if (!inp.Contains("+") && !inp.Contains("-"))
                 return multiDivi(inp);
-            decimal erg = 0;
+            Komplex erg = new Komplex(0,0);
             string[] teil1 = inp.Split('+');
             string[] teil2 = teil1[0].Split('-');
             int i = 1;
@@ -116,11 +131,11 @@ namespace SimpelCalc
             return erg;
         }
 
-        private decimal multiDivi(string inp)
+        private Komplex multiDivi(string inp)
         {
             if (!inp.Contains("*")&&!inp.Contains("/"))
                 return ManageNumbers(inp);
-            decimal erg = 1;
+            Komplex erg = new Komplex(1,0);
             string[] multi = inp.Split('*');
             if (multi[0] == "")
             {
@@ -132,18 +147,18 @@ namespace SimpelCalc
                 erg = erg * ManageNumbers(divi[0]);
                 for (int i = 1; i < divi.Length; i++)
                 {
-                    if(pot(divi[i])==0)
+                    if(pot(divi[i])==new Komplex(0,0))
                     {
                         err = true;
                         errkey = Properties.Resources.DivideByZeroKey;
-                        return -1;
+                        return new Komplex(-1,0);
                     }
                     erg = erg / ManageNumbers(divi[i]);
                 }
             }
             return erg;
         }
-        private decimal ManageNumbers(string inp)
+        private Komplex ManageNumbers(string inp)
         {
             int i = 0;
             if (inp.Contains("E")) i++;
@@ -160,7 +175,7 @@ namespace SimpelCalc
             if (inp.EndsWith("F") || inp.EndsWith("f")) i++;
             if (inp.StartsWith("log")) i++;
             if (i == 0)
-                return toDecimal(inp);
+                return toKomplex(inp);
             if (i == 1)
             {
                 if (inp.Contains("E")) return useE(inp);
@@ -180,35 +195,10 @@ namespace SimpelCalc
             }
             err = true;
             errkey = Properties.Resources.PotAndEKey;
-            return -1;
+            return new Komplex(-1,0);
         }
 
-        private decimal modulo(string inp)
-        {
-            if (inp.Contains("%"))
-            {
-                string[] split = inp.Split('%');
-                return toInt(split[0]) % toInt(split[1]);
-            }
-            return toDecimal(inp);
-        }
-        private decimal pot(string inp)
-        {
-            string[] teil1 = inp.Split('^');
-            if (teil1.Length == 1)
-            {
-                return useE(teil1[0]);
-            }
-            else if (teil1.Length == 2)
-            {
-                return Convert.ToDecimal(Math.Pow(toDouble(teil1[0]), toDouble(teil1[1])));
-            }
-            else
-            {
-                err = true;
-                return -1m;
-            }
-        }
+        
         public double toDouble(string s)
         {
             try
@@ -245,13 +235,26 @@ namespace SimpelCalc
 
             }
         }
+        private Komplex toKomplex(string s)
+        {
+            if(s.Contains("x"))
+            {
+                return toKomplex(s.Split('x')[0]) + toKomplex(s.Split('x')[1]);
+            }
+            if (s.EndsWith("i"))
+            {
+                s = s.Remove(s.Length - 1);
+                return new Komplex(0, toDecimal(s));
+            }
+            return new Komplex(toDecimal(s), 0);
+        }
         private decimal toDecimal(string s)
         {
             try
             {
                 if (nullto0 && s == "")
                 {
-                    return 0m;
+                    return 0;
                 }
                 if (s == "")
                 {
@@ -315,32 +318,57 @@ namespace SimpelCalc
                 }
             }
         }
-
-
-        private decimal useE(string inp)
+        private Komplex modulo(string inp)
         {
-            string[] teil1 = inp.Split('E');
+            if (inp.Contains("%"))
+            {
+                string[] split = inp.Split('%');
+                return new Komplex(toInt(split[0]) % toInt(split[1]),0);
+            }
+            return toKomplex(inp);
+        }
+        private Komplex pot(string inp)
+        {
+            string[] teil1 = inp.Split('^');
             if (teil1.Length == 1)
             {
-                return toDecimal(teil1[0]);
+                return useE(teil1[0]);
             }
             else if (teil1.Length == 2)
             {
-                return (toDecimal(teil1[0]) * Convert.ToDecimal(Math.Pow(10, toDouble(teil1[1]))));
+                return new Komplex((decimal)(Math.Pow(toDouble(teil1[0]), toDouble(teil1[1]))),0);
             }
             else
             {
                 err = true;
-                return -1m;
+                return new Komplex(-1,0);
             }
         }
-        private decimal Factorial(string inp)
+
+        private Komplex useE(string inp)
+        {
+            string[] teil1 = inp.Split('E');
+            if (teil1.Length == 1)
+            {
+                return toKomplex(teil1[0]);
+            }
+            else if (teil1.Length == 2)
+            {
+                return new Komplex(toDecimal(teil1[0]) * Convert.ToDecimal(Math.Pow(10, toDouble(teil1[1]))),0);
+            }
+            else
+            {
+                err = true;
+                return new Komplex(-1m,0);
+            }
+        }
+        private Komplex Factorial(string inp)
         {
             if (inp.EndsWith("!"))
 			{
-                return Factorial(toInt(inp.Remove(inp.Length-1, 1)));
+                return new Komplex(Factorial(toInt(inp.Remove(inp.Length-1, 1))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
         private Int64 Factorial(Int64 inp)
         {
@@ -355,13 +383,13 @@ namespace SimpelCalc
             err = true;
             return -1;
         }
-        private decimal fibonacci(string inp)
+        private Komplex fibonacci(string inp)
         {
             if (inp.EndsWith("F") || inp.EndsWith("f"))
             {
-                return fibonacci(toInt(inp.Remove(inp.Length-1, 1)));
+                return new Komplex(fibonacci(toInt(inp.Remove(inp.Length-1, 1))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
         private Int64 fibonacci(Int64 inp)
         {
@@ -387,98 +415,102 @@ namespace SimpelCalc
             }
             return erg;
         }
-        private decimal sin(string inp)
+        private Komplex sin(string inp)
         {
             if (inp.StartsWith("sin"))
             {
                 inp = inp.Remove(0, 3);
                 if (mode == 0)
-                    return Convert.ToDecimal(Math.Sin(toDouble(inp)));
+                    return new Komplex((decimal)Math.Sin(toDouble(inp)),0);
                 if (mode == 1)
-                    return Convert.ToDecimal(Math.Sin(DegToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Sin(DegToRad(toDouble(inp))),0);
                 if (mode == 2)
-                    return Convert.ToDecimal(Math.Sin(GradToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Sin(GradToRad(toDouble(inp))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
-        private decimal root(string inp)
+        private Komplex root(string inp)
         {
             if (inp.StartsWith("root"))
             {
                 inp = inp.Remove(0, 4);
-                return Convert.ToDecimal(Math.Sqrt(toDouble(inp)));
+                if(toDecimal(inp)<0)
+                {
+                    return new Komplex(0, (decimal) Math.Sqrt(Math.Abs(toDouble(inp))));
+                }
+                //return Convert.ToDecimal(Math.Sqrt(toDouble(inp)));
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
-        private decimal cos(string inp)
+        private Komplex cos(string inp)
         {
             if (inp.StartsWith("cos"))
             {
                 inp = inp.Remove(0, 3);
                 if (mode == 0)
-                    return Convert.ToDecimal(Math.Cos(toDouble(inp)));
+                    return new Komplex((decimal)Math.Cos(toDouble(inp)),0);
                 if (mode == 1)
-                    return Convert.ToDecimal(Math.Cos(DegToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Cos(DegToRad(toDouble(inp))),0);
                 if (mode == 2)
-                    return Convert.ToDecimal(Math.Cos(GradToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Cos(GradToRad(toDouble(inp))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
-        private decimal tan(string inp)
+        private Komplex tan(string inp)
         {
             if (inp.StartsWith("tan"))
             {
                 inp = inp.Remove(0, 3);
                 if (mode == 0)
-                    return Convert.ToDecimal(Math.Tan(toDouble(inp)));
+                    return new Komplex((decimal)Math.Tan(toDouble(inp)),0);
                 if (mode == 1)
-                    return Convert.ToDecimal(Math.Tan(DegToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Tan(DegToRad(toDouble(inp))),0);
                 if (mode == 2)
-                    return Convert.ToDecimal(Math.Tan(GradToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Tan(GradToRad(toDouble(inp))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
-        private decimal arcsin(string inp)
+        private Komplex arcsin(string inp)
         {
             if (inp.StartsWith("arcsin"))
             {
                 inp = inp.Remove(0, 6);
                 if (mode == 0)
-                    return Convert.ToDecimal(Math.Asin(toDouble(inp)));
+                    return new Komplex((decimal)Math.Asin(toDouble(inp)),0);
                 if (mode == 1)
-                    return Convert.ToDecimal(Math.Asin(DegToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Asin(DegToRad(toDouble(inp))),0);
                 if (mode == 2)
-                    return Convert.ToDecimal(Math.Asin(GradToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Asin(GradToRad(toDouble(inp))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
-        private decimal arccos(string inp)
+        private Komplex arccos(string inp)
         {
             if (inp.StartsWith("arccos"))
             {
                 inp = inp.Remove(0, 6);
                 if (mode == 0)
-                    return Convert.ToDecimal(Math.Acos(toDouble(inp)));
+                    return new Komplex((decimal)Math.Acos(toDouble(inp)),0);
                 if (mode == 1)
-                    return Convert.ToDecimal(Math.Acos(DegToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Acos(DegToRad(toDouble(inp))),0);
                 if (mode == 2)
-                    return Convert.ToDecimal(Math.Acos(GradToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Acos(GradToRad(toDouble(inp))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
-        private decimal arctan(string inp)
+        private Komplex arctan(string inp)
         {
             if (inp.StartsWith("arctan"))
             {
                 inp = inp.Remove(0, 6);
                 if (mode == 0)
-                    return Convert.ToDecimal(Math.Atan(toDouble(inp)));
+                    return new Komplex((decimal)Math.Atan(toDouble(inp)),0);
                 if (mode == 1)
-                    return Convert.ToDecimal(Math.Atan(DegToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Atan(DegToRad(toDouble(inp))),0);
                 if (mode == 2)
-                    return Convert.ToDecimal(Math.Atan(GradToRad(toDouble(inp))));
+                    return new Komplex((decimal)Math.Atan(GradToRad(toDouble(inp))),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
         private double GradToRad(double inp)
         {
@@ -488,14 +520,14 @@ namespace SimpelCalc
         {
             return (inp / 180) * Convert.ToDouble(pi);
         }
-		private decimal log(string inp)
+		private Komplex log(string inp)
         {
             if (inp.StartsWith("log"))
             {
                 inp = inp.Remove(0, 3);
-                return Convert.ToDecimal(Math.Log(toDouble(inp), logbase));
+                return new Komplex((decimal)Math.Log(toDouble(inp), logbase),0);
             }
-            return toDecimal(inp);
+            return toKomplex(inp);
         }
     }
 }
