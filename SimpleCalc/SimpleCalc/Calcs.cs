@@ -55,7 +55,7 @@ namespace SimpelCalc
             {
                 inp = minstr + inp.Remove(0, 1);
             }
-            inp = inp.Replace("/-", "/" + minstr).Replace("*-", "*" + minstr).Replace("+-", "+" + minstr).Replace("--", "-" + minstr).Replace("(-", "(" + minstr).Replace("e-", "e" + minstr).Replace("E-", "E" + minstr).Replace("sin-", "sin" + minstr).Replace("cos-", "cos" + minstr).Replace("tan-", "tan" + minstr).Replace("root-", "root" + minstr);
+            inp = inp.Replace("/-", "/" + minstr).Replace("*-", "*" + minstr).Replace("+-", "+" + minstr).Replace("--", "-" + minstr).Replace("(-", "(" + minstr).Replace("e-", "e" + minstr).Replace("E-", "E" + minstr).Replace("sin-", "sin" + minstr).Replace("cos-", "cos" + minstr).Replace("tan-", "tan" + minstr).Replace("root-", "root" + minstr).Replace("_-","_" + minstr);
             return bracts(inp);
         }
 
@@ -205,7 +205,7 @@ namespace SimpelCalc
             {
                 if (nullto0 && s == "")
                 {
-                    return 0d;
+                    return 0;
                 }
                 if(s=="")
                 {
@@ -237,6 +237,8 @@ namespace SimpelCalc
         }
         private Komplex toKomplex(string s)
         {
+            if (s == "j")
+                return new Komplex(0, 1);
             if(s.Contains("x"))
             {
                 return toKomplex(s.Split('x')[0]) + toKomplex(s.Split('x')[1]);
@@ -336,7 +338,7 @@ namespace SimpelCalc
             }
             else if (teil1.Length == 2)
             {
-                return new Komplex((decimal)(Math.Pow(toDouble(teil1[0]), toDouble(teil1[1]))),0);
+                return toKomplex(teil1[0])^toDouble(teil1[1]);
             }
             else
             {
@@ -434,11 +436,12 @@ namespace SimpelCalc
             if (inp.StartsWith("root"))
             {
                 inp = inp.Remove(0, 4);
-                if(toDecimal(inp)<0)
+                if(inp.Contains("_"))
                 {
-                    return new Komplex(0, (decimal) Math.Sqrt(Math.Abs(toDouble(inp))));
+                    string[] spl = inp.Split('_');
+                    return Komplex.root(toKomplex(spl[1]), toDouble(spl[0]));
                 }
-                //return Convert.ToDecimal(Math.Sqrt(toDouble(inp)));
+                   return Komplex.root(toKomplex(inp),2);
             }
             return toKomplex(inp);
         }
