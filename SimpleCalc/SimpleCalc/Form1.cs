@@ -3,17 +3,19 @@ using System.Windows.Forms;
 
 namespace SimpelCalc
 {
-    public partial class Form1 : Form
+    public partial class Font : Form
     {
 
         private Calcs calcs;
         private Komplex erg;
-        public Form1()
+        private Komplex storA;
+        private Komplex storB;
+        private Komplex storC;
+        private Komplex storD;
+        public Font()
         {
             calcs = new Calcs();
             InitializeComponent();
-            //toolStripComboBox1.Items.Add()
-            //toolStripComboBox1.SelectedItem;
         }
 
         private void rad_Click(object sender, EventArgs e)
@@ -21,12 +23,12 @@ namespace SimpelCalc
             rad.Checked = true;
             deg.Checked = false;
             grad.Checked = false;
-            calcs.mode = 0;
+            Calcs.mode = 0;
             if (input.Text.Contains("sin") || input.Text.Contains("cos") || input.Text.Contains("tan"))
             {
-                erg = calcs.recalc(input.Text);
-                reprint();
+                calc();
             }
+            reprint();
         }
 
         private void deg_Click(object sender, EventArgs e)
@@ -34,25 +36,33 @@ namespace SimpelCalc
             rad.Checked = false;
             deg.Checked = true;
             grad.Checked = false;
-            calcs.mode = 1;
+            Calcs.mode = 1;
             if (input.Text.Contains("sin") || input.Text.Contains("cos") || input.Text.Contains("tan"))
             {
                 erg = calcs.recalc(input.Text);
                 reprint();
             }
         }
-
+        private void calc()
+        {
+            string inp = input.Text;
+            if (storA != null) inp=inp.Replace("A", storA.ToString(true));
+            if (storB != null) inp=inp.Replace("B", storB.ToString(true));
+            if (storC != null) inp=inp.Replace("C", storC.ToString(true));
+            if (storD != null) inp=inp.Replace("D", storD.ToString(true));
+            erg = calcs.recalc(inp);
+        }
         private void grad_Click(object sender, EventArgs e)
         {
             rad.Checked = false;
             deg.Checked = false;
             grad.Checked = true;
-            calcs.mode = 2;
+            Calcs.mode = 2;
             if (input.Text.Contains("sin")|| input.Text.Contains("cos")|| input.Text.Contains("tan"))
             {
-                erg = calcs.recalc(input.Text);
-                reprint();
+                calc();
             }
+            reprint();
         }
 
         private void emptyTo0_Click(object sender, EventArgs e)
@@ -69,7 +79,7 @@ namespace SimpelCalc
             }
 
             calcs.nullto0 = emptyTo0.Checked;
-            erg = calcs.recalc(input.Text);
+            calc();
             reprint();
         }
 
@@ -85,13 +95,13 @@ namespace SimpelCalc
                 emptyTo0.Checked = false;
             }
             calcs.errto0 = convertErrorTo0.Checked;
-            erg = calcs.recalc(input.Text);
+            calc();
             reprint();
         }
 
         private void input_TextChanged(object sender, EventArgs e)
         {
-            erg = calcs.recalc(input.Text);
+            calc();
             reprint();
         }
 
@@ -101,14 +111,9 @@ namespace SimpelCalc
             reprint();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void reprint()
         {
-            if (calcs.err)
+            if (Calcs.err)
             {
                 if (calcs.errkey == Properties.Resources.DefaultKey)
                 {
@@ -144,7 +149,7 @@ namespace SimpelCalc
                 }
                 if (sCIToolStripMenuItem.Checked)
                 {
-                    output.Text = erg.Re.ToString("E" + decpoints.Value);
+                    output.Text = erg.ToString("E" + decpoints.Value);
                 }
             }
         }
@@ -154,9 +159,9 @@ namespace SimpelCalc
             calcs.logbase = Calcs.eul;
             if (input.Text.Contains("log"))
             {
-                erg = calcs.recalc(input.Text);
-                reprint();
+                calc();
             }
+            reprint();
         }
 
         private void toolStripComboBox1_Click(object sender, EventArgs e)
@@ -165,9 +170,9 @@ namespace SimpelCalc
             calcs.logbase = calcs.toDouble(toolStripComboBox1.Text);
             if (input.Text.Contains("log"))
             {
-                erg = calcs.recalc(input.Text);
-                reprint();
+                calc();
             }
+            reprint();
         }
 
         private void northToolStripMenuItem_Click(object sender, EventArgs e)
@@ -181,6 +186,63 @@ namespace SimpelCalc
         {
             northToolStripMenuItem.Checked = false;
             sCIToolStripMenuItem.Checked = true;
+            reprint();
+        }
+
+        private void strA_Click(object sender, EventArgs e)
+        {
+            storA = erg;
+            if (northToolStripMenuItem.Checked)
+            {
+                textA.Text = storA.ToString("G" + decpoints.Value);
+            }
+            if (sCIToolStripMenuItem.Checked)
+            {
+                textA.Text = storA.ToString("E" + decpoints.Value);
+            }
+            calc();
+            reprint();
+        }
+        private void strB_Click(object sender, EventArgs e)
+        {
+            storB = erg;
+            if (northToolStripMenuItem.Checked)
+            {
+                textB.Text = storB.ToString("G" + decpoints.Value);
+            }
+            if (sCIToolStripMenuItem.Checked)
+            {
+                textB.Text = storB.ToString("E" + decpoints.Value);
+            }
+            calc();
+            reprint();
+        }
+        private void strC_Click(object sender, EventArgs e)
+        {
+            storC = erg;
+            if (northToolStripMenuItem.Checked)
+            {
+                textC.Text = storC.ToString("G" + decpoints.Value);
+            }
+            if (sCIToolStripMenuItem.Checked)
+            {
+                textC.Text = storC.ToString("E" + decpoints.Value);
+            }
+            calc();
+            reprint();
+        }
+        private void strD_Click(object sender, EventArgs e)
+        {
+            storD = erg;
+            if (northToolStripMenuItem.Checked)
+            {
+                textD.Text = storD.ToString("G" + decpoints.Value);
+            }
+            if (sCIToolStripMenuItem.Checked)
+            {
+                textD.Text = storD.ToString("E" + decpoints.Value);
+            }
+            calc();
             reprint();
         }
     }

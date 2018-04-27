@@ -127,7 +127,7 @@
     <value>You tried to convert null!</value>
   </data>
   <data name="PotAndE" xml:space="preserve">
-    <value>You can not use e and E, e and ^, E and ^ in one number (Try using brackets)</value>
+    <value>You can only use E, e, ^, root or sin etc. without brackets</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="DefaultKey" type="System.Int32, mscorlib">

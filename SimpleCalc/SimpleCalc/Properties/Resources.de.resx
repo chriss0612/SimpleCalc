@@ -127,6 +127,7 @@
     <value>Leere Zeichenketten können nicht umgewandelt werden!</value>
   </data>
   <data name="PotAndE" xml:space="preserve">
-    <value>Du kannst nur Potenzen oder e in einer Zahl verwenden (Versuche es mit Klammern!)</value>
+    <value>Du kannst nur E, ^, root oder sin etc. in einer Zahl ohne Klammern verwenden</value>
+    <comment> </comment>
   </data>
 </root>
